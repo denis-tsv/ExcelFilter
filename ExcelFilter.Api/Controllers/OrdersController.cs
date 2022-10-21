@@ -1,5 +1,6 @@
 using ExcelFilter.Api.UseCases.Orders.GetOrderFilterOptions;
 using ExcelFilter.Api.UseCases.Orders.GetOrderFilterOptionsDynamic;
+using ExcelFilter.Api.UseCases.Orders.GetOrderFilterOptionsSimple;
 using ExcelFilter.Api.UseCases.Orders.GetOrders;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,17 @@ public class OrdersController : ControllerBase
     public async Task<GetOrderFilterOptionsDynamicResponseDto> GetFilterOptionsDynamic([FromQuery] GetOrderFilterOptionsRequestDto dto, CancellationToken cancellationToken)
     {
         var result = await _sender.Send(new GetOrderFilterOptionsDynamicQuery(dto.Fields), cancellationToken);
+
+        return result;
+    }
+
+    /// <summary>
+    /// Available fields: Price, Name, CityId
+    /// </summary>
+    [HttpGet("filter-options-simple")]
+    public async Task<GetOrderFilterOptionsSimpleResponseDto> GetFilterOptionsSimple([FromQuery] GetOrderFilterOptionsRequestDto dto, CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(new GetOrderFilterOptionsSimpleQuery(dto.Fields), cancellationToken);
 
         return result;
     }
